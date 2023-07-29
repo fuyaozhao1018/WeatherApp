@@ -14,22 +14,16 @@
       <div class="flex flex-col items-center text-white py-12">
         <h1 class="text-4xl mb-2">{{ route.params.city }}</h1>
         <p class="text-sm mb-12">
-          {{
-            new Date(weatherData.currentTime).toLocaleDateString(
+          {{new Date(weatherData.currentTime).toLocaleDateString(
               "en-us",
-              {
-                weekday: "short",
+              {weekday: "short",
                 day: "2-digit",
-                month: "long",
-              }
-            )
+                month: "long",}
+                )
           }}
-          {{
-            new Date(weatherData.currentTime).toLocaleTimeString(
+          {{new Date(weatherData.currentTime).toLocaleTimeString(
               "en-us",
-              {
-                timeStyle: "short",
-              }
+              { timeStyle: "short",}
             )
           }}
         </p>
@@ -80,9 +74,7 @@
                 "
                 alt=""
               />
-              <p class="text-xl">
-                {{ Math.round(hourData.temp) }}&deg;
-              </p>
+              <p class="text-xl"> {{ Math.round(hourData.temp) }}&deg;</p>
             </div>
           </div>
         </div>
@@ -97,23 +89,17 @@
           <div
             v-for="day in weatherData.daily"
             :key="day.dt"
-            class="flex items-center"
-          >
+            class="flex items-center">
             <p class="flex-1">
-              {{
-                new Date(day.dt * 1000).toLocaleDateString(
+              {{new Date(day.dt * 1000).toLocaleDateString(
                   "en-us",
-                  {
-                    weekday: "long",
-                  }
+                  {weekday: "long",}
                 )
               }}
             </p>
             <img
               class="w-[50px] h-[50px] object-cover"
-              :src="
-                `http://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`
-              "
+              :src="`http://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`"
               alt=""
             />
             <div class="flex gap-2 flex-1 justify-end">
@@ -134,9 +120,7 @@
   const getWeatherData = async () => {
     try {
       const weatherData = await axios.get(
-        `https://api.openweathermap.org/data/2.5/onecall?
-        lat=${route.query.lat}&lon=${route.query.lng}
-        &exclude={part}&appid=7efa332cf48aeb9d2d391a51027f1a71&units=imperial`
+        `https://api.openweathermap.org/data/2.5/onecall?lat=${route.query.lat}&lon=${route.query.lng}&exclude={part}&appid=7efa332cf48aeb9d2d391a51027f1a71&units=imperial`
       );
   
       // cal current date & time
