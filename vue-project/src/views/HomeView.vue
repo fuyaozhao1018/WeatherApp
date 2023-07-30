@@ -36,13 +36,23 @@
         </template>
       </ul>
     </div>
+    <div class="flex flex-col gap-4">
+      <Suspense>
+        <CityList />
+        <!-- loading -->
+        <template #fallback>
+          <p>Loading...</p>
+        </template>
+      </Suspense>
+    </div>
   </main>
 </template>
 
 <script setup>
-import { ref } from "vue";
 import axios from "axios";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
+import CityList from "../components/CityList.vue";
 
 const router = useRouter();
 const previewCity = (searchResult) => {
@@ -71,7 +81,6 @@ const getSearchResults = () => {
   queryTimeout.value = setTimeout(async () => {
     if (searchQuery.value !== "") {
       try{
-
       
       const result = await axios.get(
         `https://api.mapbox.com/geocoding/v5/mapbox.places/${searchQuery.value}.json?access_token=${mapboxAPIKey}&types=place`
