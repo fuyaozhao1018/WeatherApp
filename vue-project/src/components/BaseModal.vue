@@ -1,6 +1,6 @@
 <template>
     <Teleport to="body">
-        <Transition name="modal=outer">
+        <Transition name="modal-outer">
         <div
         v-show="modalActive"
         class="absolute w-full bg-black bg-opacity-30 h-screen

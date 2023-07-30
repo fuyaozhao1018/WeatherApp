@@ -17,7 +17,10 @@
             ></i>
             <i class = "fa-solid fa-plus text-xl
              hover:text-weather-secondary duration-150
-              cursor-pointer"></i>
+              cursor-pointer"
+              @click="addCity"
+              v-if="route.query.preview"
+            ></i>
         </div>
 
         <BaseModal 
@@ -32,29 +35,22 @@
           </p>
           <h2 class="text-2xl">How it works:</h2>
           <ol class="list-decimal list-inside mb-4">
-            <li>
-              Search for your city by entering the name into the
-              search bar.
-            </li>
-            <li>
-              Select a city within the results, this will take
-              you to the current weather for your selection.
-            </li>
-            <li>
-              Track the city by clicking on the "+" icon in the
+            <li>Search for city by entering the name into the
+              search bar.</li>
+
+            <li>Select a city in the results, this will take
+              you to the current weather for your selection.</li>
+
+            <li>Track the city by clicking on the "+" icon on the
               top right. This will save the city to view at a
-              later time on the home page.
-            </li>
+              later time on the home page.</li>
           </ol>
 
           <h2 class="text-2xl">Removing a city</h2>
-          <p>
-            If you no longer wish to track a city, simply select
+          <p>If you no longer wish to track a city, simply select
             the city within the home page. At the bottom of the
-            page, there will be am option to delete the city.
-          </p>
+            page, there will be am option to delete the city.</p>
         </div>
->
         </BaseModal>
         </nav>
     </header>
@@ -62,8 +58,41 @@
 
 <script setup>
 import { ref } from 'vue';
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRoute, useRouter } from "vue-router";
+import { uid } from "uid";
 import BaseModal from './BaseModal.vue';
+
+const savedCities = ref([]);
+const route = useRoute();
+const router = useRouter();
+const addCity = () => {
+  if (localStorage.getItem("savedCities")) {
+    savedCities.value = JSON.parse(
+      localStorage.getItem("savedCities")
+    );
+  }
+
+const locationObj = {
+    id: uid(),
+    state: route.params.state,
+    city: route.params.city,
+    coords: {
+      lat: route.query.lat,
+      lng: route.query.lng,
+    },
+  };
+
+savedCities.value.push(locationObj);
+localStorage.setItem(
+    "savedCities",
+    JSON.stringify(savedCities.value)
+);
+
+  let query = Object.assign({}, route.query);
+  delete query.preview;
+  query.id = locationObj.id;
+  router.replace({ query });
+};
 
 const modalActive = ref(null);
 const toggleModal = () => {
