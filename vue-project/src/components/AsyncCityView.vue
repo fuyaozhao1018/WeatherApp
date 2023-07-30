@@ -18,13 +18,11 @@
               "en-us",
               {weekday: "short",
                 day: "2-digit",
-                month: "long",}
-                )
+                month: "long",})
           }}
           {{new Date(weatherData.currentTime).toLocaleTimeString(
               "en-us",
-              { timeStyle: "short",}
-            )
+              { timeStyle: "short",})
           }}
         </p>
         <p class="text-8xl mb-8">
@@ -39,9 +37,7 @@
         </p>
         <img
           class="w-[150px] h-auto"
-          :src="
-            `http://openweathermap.org/img/wn/${weatherData.current.weather[0].icon}@2x.png`
-          "
+          :src="`http://openweathermap.org/img/wn/${weatherData.current.weather[0].icon}@2x.png`"
           alt=""
         />
       </div>
@@ -69,9 +65,7 @@
               </p>
               <img
                 class="w-auto h-[50px] object-cover"
-                :src="
-                  `http://openweathermap.org/img/wn/${hourData.weather[0].icon}@2x.png`
-                "
+                :src="`http://openweathermap.org/img/wn/${hourData.weather[0].icon}@2x.png`"
                 alt=""
               />
               <p class="text-xl"> {{ Math.round(hourData.temp) }}&deg;</p>
@@ -93,8 +87,7 @@
             <p class="flex-1">
               {{new Date(day.dt * 1000).toLocaleDateString(
                   "en-us",
-                  {weekday: "long",}
-                )
+                  {weekday: "long",})
               }}
             </p>
             <img
@@ -109,12 +102,23 @@
           </div>
         </div>
       </div>
+    <!-- Add Remove Function -->
+    <div
+      class="flex items-center gap-2 py-12
+            text-white cursor-pointer 
+            duration-150 hover:text-orange-500"
+            @click="removeCity">
+      <i class="fa-solid fa-trash"></i>
+      <p>Remove City</p>
     </div>
+  </div>
+
+
   </template>
   
   <script setup>
   import axios from "axios";
-  import { useRoute } from "vue-router";
+  import { useRoute, useRouter } from "vue-router";
   
   const route = useRoute();
   const getWeatherData = async () => {
@@ -142,4 +146,20 @@
     }
   };
   const weatherData = await getWeatherData();
+
+const router = useRouter();
+//add Remove City Function
+const removeCity = () => {
+  //Read
+  const cities = JSON.parse(localStorage.getItem("savedCities"));
+  const updatedCities = cities.filter(
+    (city) => city.id !== route.query.id);
+  //Reset
+  localStorage.setItem(
+    "savedCities", JSON.stringify(updatedCities));
+  //update
+  router.push({
+    name: "home",
+  });
+};
   </script>
