@@ -139,7 +139,10 @@
         hour.currentTime =
           utc + 1000 * weatherData.data.timezone_offset;
       });
-  
+
+      //Just delay a little bit to show the animation
+      await new Promise((res) => setTimeout(res, 600));
+      
       return weatherData.data;
     } catch (err) {
       console.log(err);

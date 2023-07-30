@@ -32,6 +32,8 @@
       });
 
       const weatherData = await Promise.all(requests);
+      //Just delay a little bit to show the animation
+      await new Promise((res) => setTimeout(res, 600));
       weatherData.forEach((value, index) => {
         savedCities.value[index].weather = value.data;
       });
